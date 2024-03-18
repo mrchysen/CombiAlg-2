@@ -50,19 +50,33 @@ public class CombinativeGenerator
         { 
             result.Add(string.Join(" ", A.Skip(1)));
 
-            int i = n;
-            for (; 1 < i; i--)
+            int i = n - 1;
+            for (;i >= 1;i--)
             {
-                if (A[i] < A[i - 1])
+                if (A[i] < A[i + 1])
                     break;
             }
 
-            if(i == 1)
+            if(i < 1)
             {
                 break;
             }
-        }
 
+            int j = i + 1;
+            int min_ind = j;
+            for (; j < n + 1; j++)
+            {
+                if (A[i] < A[j])
+                    min_ind = j;
+            }
+
+            j = min_ind;
+
+            (A[i], A[j]) = (A[j], A[i]);
+
+            var cutArr = A.TakeLast(A.Length - i - 1).Reverse().ToList();
+            cutArr.CopyTo(A, i+1);
+        }
 
         return result;
     }
